@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PeerLink Connection Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        button { padding: 10px 15px; margin: 5px; background: #007bff; color: white; border: none; border-radius: 3px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        input { padding: 8px; margin: 5px; border: 1px solid #ddd; border-radius: 3px; }
+        pre { background: #f8f9fa; padding: 10px; border-radius: 3px; overflow-x: auto; }
+        .result { margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>PeerLink Connection Test Dashboard</h1>
+        
+        <div class="section">
+            <h3>1. Get All Users</h3>
+            <button onclick="getUsers()">Get Users List</button>
+            <div id="users-result" class="result"></div>
+        </div>
+
+        <div class="section">
+            <h3>2. Test Connection Between Users</h3>
+            <input type="text" id="fromUserId" placeholder="From User ID">
+            <input type="text" id="toUserId" placeholder="To User ID">
+            <button onclick="testConnection()">Send Connection Request</button>
+            <div id="connection-result" class="result"></div>
+        </div>
+
+        <div class="section">
+            <h3>3. Check Match Status</h3>
+            <input type="text" id="user1Id" placeholder="User 1 ID">
+            <input type="text" id="user2Id" placeholder="User 2 ID">
+            <button onclick="checkStatus()">Check Status</button>
+            <div id="status-result" class="result"></div>
+        </div>
+
+        <div class="section">
+            <h3>4. Get User Matches</h3>
+            <input type="text" id="matchUserId" placeholder="User ID">
+            <button onclick="getUserMatches()">Get Matches</button>
+            <div id="matches-result" class="result"></div>
+        </div>
+
+        <div class="section">
+            <h3>5. Get User Connections</h3>
+            <input type="text" id="connUserId" placeholder="User ID">
+            <button onclick="getUserConnections()">Get Connections</button>
+            <div id="connections-result" class="result"></div>
+        </div>
+
+        <div class="section">
+            <h3>6. Reset User Data</h3>
+            <input type="text" id="resetUserId" placeholder="User ID">
+            <button onclick="resetUser()" style="background: #dc3545;">Reset User</button>
+            <div id="reset-result" class="result"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:5001/api/test';
+
+        async function makeRequest(url, method = 'GET') {
+            try {
+                const response = await fetch(url, { method });
+                const data = await response.json();
+                return { success: response.ok, data };
+            } catch (error) {
+                return { success: false, error: error.message };
+            }
+        }
+
+        function displayResult(elementId, result) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = `<pre>${JSON.stringify(result, null, 2)}</pre>`;
+        }
+
+        async function getUsers() {
+            const result = await makeRequest(`${API_BASE}/users`);
+            displayResult('users-result', result);
+        }
+
+        async function testConnection() {
+            const fromUserId = document.getElementById('fromUserId').value;
+            const toUserId = document.getElementById('toUserId').value;
+            
+            if (!fromUserId || !toUserId) {
+                alert('Please enter both user IDs');
+                return;
+            }
+
+            const result = await makeRequest(`${API_BASE}/connect/${fromUserId}/${toUserId}`, 'POST');
+            displayResult('connection-result', result);
+        }
+
+        async function checkStatus() {
+            const user1Id = document.getElementById('user1Id').value;
+            const user2Id = document.getElementById('user2Id').value;
+            
+            if (!user1Id || !user2Id) {
+                alert('Please enter both user IDs');
+                return;
+            }
+
+            const result = await makeRequest(`${API_BASE}/status/${user1Id}/${user2Id}`);
+            displayResult('status-result', result);
+        }
+
+        async function getUserMatches() {
+            const userId = document.getElementById('matchUserId').value;
+            
+            if (!userId) {
+                alert('Please enter user ID');
+                return;
+            }
+
+            const result = await makeRequest(`${API_BASE}/matches/${userId}`);
+            displayResult('matches-result', result);
+        }
+
+        async function getUserConnections() {
+            const userId = document.getElementById('connUserId').value;
+            
+            if (!userId) {
+                alert('Please enter user ID');
+                return;
+            }
+
+            const result = await makeRequest(`${API_BASE}/connections/${userId}`);
+            displayResult('connections-result', result);
+        }
+
+        async function resetUser() {
+            const userId = document.getElementById('resetUserId').value;
+            
+            if (!userId) {
+                alert('Please enter user ID');
+                return;
+            }
+
+            if (!confirm('Are you sure you want to reset this user\'s matches and connections?')) {
+                return;
+            }
+
+            const result = await makeRequest(`${API_BASE}/reset/${userId}`, 'DELETE');
+            displayResult('reset-result', result);
+        }
+
+        // Load users on page load
+        window.onload = getUsers;
+    </script>
+</body>
+</html>
