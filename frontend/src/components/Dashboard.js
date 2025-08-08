@@ -255,7 +255,19 @@ function Dashboard() {
             <Grid item xs={12} md={6}>
               <Grid container spacing={2}>
                 <Grid item xs={6}>
-                  <Card sx={{ bgcolor: alpha('#fff', 0.1), color: 'white' }}>
+                  <Card sx={{ 
+                    bgcolor: 'rgba(255, 255, 255, 0.15)', 
+                    color: 'white',
+                    borderRadius: 4,
+                    backdropFilter: 'blur(20px)',
+                    border: '1px solid rgba(255, 255, 255, 0.2)',
+                    transition: 'all 0.3s ease',
+                    '&:hover': {
+                      bgcolor: 'rgba(255, 255, 255, 0.25)',
+                      transform: 'translateY(-4px)',
+                      boxShadow: '0 8px 32px rgba(255, 255, 255, 0.1)',
+                    }
+                  }}>
                     <CardContent>
                       <Typography variant="overline">Teaching</Typography>
                       <Typography variant="h4">{user.subjectsToTeach.length}</Typography>
@@ -264,7 +276,19 @@ function Dashboard() {
                   </Card>
                 </Grid>
                 <Grid item xs={6}>
-                  <Card sx={{ bgcolor: alpha('#fff', 0.1), color: 'white' }}>
+                  <Card sx={{ 
+                    bgcolor: 'rgba(255, 255, 255, 0.15)', 
+                    color: 'white',
+                    borderRadius: 4,
+                    backdropFilter: 'blur(20px)',
+                    border: '1px solid rgba(255, 255, 255, 0.2)',
+                    transition: 'all 0.3s ease',
+                    '&:hover': {
+                      bgcolor: 'rgba(255, 255, 255, 0.25)',
+                      transform: 'translateY(-4px)',
+                      boxShadow: '0 8px 32px rgba(255, 255, 255, 0.1)',
+                    }
+                  }}>
                     <CardContent>
                       <Typography variant="overline">Learning</Typography>
                       <Typography variant="h4">{user.subjectsToLearn.length}</Typography>
@@ -273,7 +297,19 @@ function Dashboard() {
                   </Card>
                 </Grid>
                 <Grid item xs={6}>
-                  <Card sx={{ bgcolor: alpha('#fff', 0.1), color: 'white' }}>
+                  <Card sx={{ 
+                    bgcolor: 'rgba(255, 255, 255, 0.15)', 
+                    color: 'white',
+                    borderRadius: 4,
+                    backdropFilter: 'blur(20px)',
+                    border: '1px solid rgba(255, 255, 255, 0.2)',
+                    transition: 'all 0.3s ease',
+                    '&:hover': {
+                      bgcolor: 'rgba(255, 255, 255, 0.25)',
+                      transform: 'translateY(-4px)',
+                      boxShadow: '0 8px 32px rgba(255, 255, 255, 0.1)',
+                    }
+                  }}>
                     <CardContent>
                       <Typography variant="overline">Rating</Typography>
                       <Typography variant="h4">{user.teachingScore.toFixed(1)}</Typography>
@@ -282,7 +318,19 @@ function Dashboard() {
                   </Card>
                 </Grid>
                 <Grid item xs={6}>
-                  <Card sx={{ bgcolor: alpha('#fff', 0.1), color: 'white' }}>
+                  <Card sx={{ 
+                    bgcolor: 'rgba(255, 255, 255, 0.15)', 
+                    color: 'white',
+                    borderRadius: 4,
+                    backdropFilter: 'blur(20px)',
+                    border: '1px solid rgba(255, 255, 255, 0.2)',
+                    transition: 'all 0.3s ease',
+                    '&:hover': {
+                      bgcolor: 'rgba(255, 255, 255, 0.25)',
+                      transform: 'translateY(-4px)',
+                      boxShadow: '0 8px 32px rgba(255, 255, 255, 0.1)',
+                    }
+                  }}>
                     <CardContent>
                       <Typography variant="overline">Matches</Typography>
                       <Typography variant="h4">
@@ -323,9 +371,16 @@ function Dashboard() {
               <Card
                 sx={{
                   height: '100%',
-                  transition: 'transform 0.2s',
+                  borderRadius: 4,
+                  backdropFilter: 'blur(20px)',
+                  backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                  boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
+                  border: '1px solid rgba(255, 255, 255, 0.18)',
+                  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                   '&:hover': {
-                    transform: 'translateY(-4px)',
+                    transform: 'translateY(-8px)',
+                    boxShadow: '0 16px 48px 0 rgba(31, 38, 135, 0.5)',
+                    backgroundColor: 'rgba(255, 255, 255, 0.9)',
                   },
                 }}
               >
@@ -348,7 +403,18 @@ function Dashboard() {
         {/* Subjects Section */}
         <Grid container spacing={4}>
           <Grid item xs={12} md={6}>
-            <Card>
+            <Card sx={{
+              borderRadius: 4,
+              backdropFilter: 'blur(20px)',
+              backgroundColor: 'rgba(255, 255, 255, 0.8)',
+              boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
+              border: '1px solid rgba(255, 255, 255, 0.18)',
+              transition: 'all 0.3s ease',
+              '&:hover': {
+                transform: 'translateY(-4px)',
+                boxShadow: '0 12px 40px 0 rgba(31, 38, 135, 0.45)',
+              }
+            }}>
               <CardContent>
                 <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                   <SchoolIcon color="primary" />
@@ -368,21 +434,35 @@ function Dashboard() {
             </Card>
           </Grid>
           <Grid item xs={12} md={6}>
-            <Card>
+            <Card sx={{
+              borderRadius: 4,
+              backdropFilter: 'blur(20px)',
+              backgroundColor: 'rgba(255, 255, 255, 0.8)',
+              boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
+              border: '1px solid rgba(255, 255, 255, 0.18)',
+              transition: 'all 0.3s ease',
+              '&:hover': {
+                transform: 'translateY(-4px)',
+                boxShadow: '0 12px 40px 0 rgba(31, 38, 135, 0.45)',
+              }
+            }}>
               <CardContent>
                 <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                   <StarIcon color="secondary" />
                   Subjects You Learn
                 </Typography>
                 <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-                  {user.subjectsToLearn.map((subject, index) => (
-                    <Chip
-                      key={index}
-                      label={`${subject.subject} (${subject.proficiency}★)`}
-                      color="secondary"
-                      variant="outlined"
-                    />
-                  ))}
+                  {user.subjectsToLearn.map((subject, index) => {
+                    console.log('Learn subject:', subject); // Debug log
+                    return (
+                      <Chip
+                        key={index}
+                        label={`${subject.subject} (${subject.desiredLevel || subject.priority || 1}★)`}
+                        color="secondary"
+                        variant="outlined"
+                      />
+                    );
+                  })}
                 </Box>
               </CardContent>
             </Card>

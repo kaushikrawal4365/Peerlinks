@@ -15,6 +15,15 @@ const messageSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  messageType: {
+    type: String,
+    enum: ['text', 'meeting'],
+    default: 'text'
+  },
+  meetingId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Meeting'
+  },
   read: {
     type: Boolean,
     default: false

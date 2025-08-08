@@ -25,6 +25,7 @@ const notificationRoutes = require('./routes/notificationRoutes');
 const subjectRoutes = require('./routes/subjectRoutes');
 const internalRoutes = require('./routes/internalRoutes');
 const testRoutes = require('./routes/testRoutes');
+const meetingRoutes = require('./routes/meetingRoutes');
 
 // --- Middleware Imports ---
 const authMiddleware = require('./middleware/authMiddleware');
@@ -425,6 +426,7 @@ app.use('/api/matches', authMiddleware, matchRoutes);
 app.use('/api/chat', authMiddleware, chatRoutes);
 app.use('/api/notifications', authMiddleware, notificationRoutes);
 app.use('/api/subjects', authMiddleware, subjectRoutes);
+app.use('/api/meetings', authMiddleware, meetingRoutes);
 app.use('/api/internal', internalRoutes); // No auth for internal services
 app.use('/api/test', testRoutes); // Test routes - no auth for debugging
 
@@ -449,10 +451,37 @@ io.on('connection', (socket) => {
         io.emit('user_status_changed', { userId: socket.userId, status: 'online' });
         const unreadCount = await Message.countDocuments({ recipient: socket.userId, read: false });
         socket.emit('unread_count', unreadCount);
+        
+        // Get upcoming meetings for notifications
+        const Meeting = require('./models/Meeting');
+        const upcomingMeetings = await Meeting.find({
+          $or: [
+            { creator: socket.userId },
+            { participant: socket.userId }
+          ],
+          status: 'accepted',
+          startTime: { $gte: new Date() }
+        }).sort({ startTime: 1 }).limit(5);
+        
+        // Send upcoming meetings to user
+        if (upcomingMeetings.length > 0) {
+          socket.emit('upcoming_meetings', upcomingMeetings);
+        }
       }
     } catch (error) {
       console.error('Socket authentication error:', error.message);
     }
+  });
+  
+  // Meeting events
+  socket.on('join_meeting', (meetingId) => {
+    socket.join(`meeting:${meetingId}`);
+    console.log(`User ${socket.userId} joined meeting room: ${meetingId}`);
+  });
+  
+  socket.on('leave_meeting', (meetingId) => {
+    socket.leave(`meeting:${meetingId}`);
+    console.log(`User ${socket.userId} left meeting room: ${meetingId}`);
   });
 
   socket.on('disconnect', async () => {

@@ -454,7 +454,15 @@ const Profile = () => {
 
   return (
     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-      <Paper sx={{ p: 3, mb: 3 }}>
+      <Paper sx={{ 
+        p: 3, 
+        mb: 3,
+        borderRadius: 4,
+        backdropFilter: 'blur(20px)',
+        backgroundColor: 'rgba(255, 255, 255, 0.85)',
+        boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
+        border: '1px solid rgba(255, 255, 255, 0.18)',
+      }}>
         {/* Header Section */}
         <Box sx={{ display: 'flex', alignItems: 'start', mb: 4 }}>
           <Avatar
@@ -524,7 +532,18 @@ const Profile = () => {
         <Grid container spacing={3}>
           {/* Teaching Subjects */}
           <Grid item xs={12} md={6}>
-            <Card>
+            <Card sx={{
+              borderRadius: 4,
+              backdropFilter: 'blur(20px)',
+              backgroundColor: 'rgba(255, 255, 255, 0.8)',
+              boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
+              border: '1px solid rgba(255, 255, 255, 0.18)',
+              transition: 'all 0.3s ease',
+              '&:hover': {
+                transform: 'translateY(-4px)',
+                boxShadow: '0 12px 40px 0 rgba(31, 38, 135, 0.45)',
+              }
+            }}>
               <CardContent>
                 <Typography variant="h6" gutterBottom>
                   Teaching
@@ -559,9 +578,14 @@ const Profile = () => {
                             height: 'auto', 
                             py: 0.5,
                             pr: 3,
+                            borderRadius: 3,
+                            backdropFilter: 'blur(10px)',
+                            backgroundColor: 'rgba(25, 118, 210, 0.1)',
+                            border: '1px solid rgba(25, 118, 210, 0.3)',
                             '&:hover': {
-                              backgroundColor: 'primary.light',
-                              color: 'primary.contrastText'
+                              backgroundColor: 'rgba(25, 118, 210, 0.2)',
+                              transform: 'translateY(-2px)',
+                              boxShadow: '0 4px 16px rgba(25, 118, 210, 0.3)',
                             }
                           }}
                         />
@@ -604,7 +628,18 @@ const Profile = () => {
 
           {/* Learning Subjects */}
           <Grid item xs={12} md={6}>
-            <Card>
+            <Card sx={{
+              borderRadius: 4,
+              backdropFilter: 'blur(20px)',
+              backgroundColor: 'rgba(255, 255, 255, 0.8)',
+              boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
+              border: '1px solid rgba(255, 255, 255, 0.18)',
+              transition: 'all 0.3s ease',
+              '&:hover': {
+                transform: 'translateY(-4px)',
+                boxShadow: '0 12px 40px 0 rgba(31, 38, 135, 0.45)',
+              }
+            }}>
               <CardContent>
                 <Typography variant="h6" gutterBottom>
                   Learning
@@ -638,9 +673,14 @@ const Profile = () => {
                             height: 'auto', 
                             py: 0.5,
                             pr: 3,
+                            borderRadius: 3,
+                            backdropFilter: 'blur(10px)',
+                            backgroundColor: 'rgba(156, 39, 176, 0.1)',
+                            border: '1px solid rgba(156, 39, 176, 0.3)',
                             '&:hover': {
-                              backgroundColor: 'secondary.light',
-                              color: 'secondary.contrastText'
+                              backgroundColor: 'rgba(156, 39, 176, 0.2)',
+                              transform: 'translateY(-2px)',
+                              boxShadow: '0 4px 16px rgba(156, 39, 176, 0.3)',
                             }
                           }}
                         />

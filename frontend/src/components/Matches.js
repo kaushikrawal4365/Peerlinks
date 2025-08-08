@@ -19,6 +19,7 @@ import {
   IconButton,
   Tooltip
 } from '@mui/material';
+import UserProfileDialog from './UserProfileDialog';
 import { 
   Check as CheckIcon, 
   Close as CloseIcon,
@@ -63,6 +64,8 @@ function Matches() {
   const [error, setError] = useState(null);
   const [tabValue, setTabValue] = useState(0);
   const [pendingTab, setPendingTab] = useState('received');
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [profileDialogOpen, setProfileDialogOpen] = useState(false);
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: '',
@@ -201,6 +204,17 @@ function Matches() {
     setTabValue(newValue);
   };
 
+  // Handle opening user profile dialog
+  const handleOpenProfile = (user) => {
+    setSelectedUser(user);
+    setProfileDialogOpen(true);
+  };
+
+  // Handle closing user profile dialog
+  const handleCloseProfile = () => {
+    setProfileDialogOpen(false);
+  };
+
   // Render user card with appropriate actions based on type
   const renderUserCard = (user, type) => {
     console.log('Rendering user card:', user, 'type:', type);
@@ -208,7 +222,27 @@ function Matches() {
     const isPendingSent = type === 'pending' && pending.sent.some(u => u._id === user._id);
     
     return (
-      <Card key={user._id} sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+      <Card 
+        key={user._id} 
+        sx={{ 
+          height: '100%', 
+          display: 'flex', 
+          flexDirection: 'column',
+          cursor: 'pointer',
+          borderRadius: 4,
+          backdropFilter: 'blur(20px)',
+          backgroundColor: 'rgba(255, 255, 255, 0.8)',
+          boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
+          border: '1px solid rgba(255, 255, 255, 0.18)',
+          transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+          '&:hover': {
+            transform: 'translateY(-8px) scale(1.02)',
+            boxShadow: '0 16px 48px 0 rgba(31, 38, 135, 0.5)',
+            backgroundColor: 'rgba(255, 255, 255, 0.9)',
+          }
+        }}
+        onClick={() => handleOpenProfile(user)}
+      >
         <Box sx={{ height: 140, display: 'flex', alignItems: 'center', justifyContent: 'center', bgcolor: 'grey.100' }}>
           {user.profileImage ? (
             <img 
@@ -226,7 +260,10 @@ function Matches() {
               width: 80, 
               height: 80, 
               fontSize: '2rem',
-              display: user.profileImage ? 'none' : 'flex'
+              display: user.profileImage ? 'none' : 'flex',
+              border: '3px solid rgba(255, 255, 255, 0.3)',
+              boxShadow: '0 8px 32px rgba(31, 38, 135, 0.3)',
+              backdropFilter: 'blur(10px)'
             }}
           >
             {user.name?.charAt(0)?.toUpperCase() || 'U'}
@@ -252,7 +289,18 @@ function Matches() {
                 {(user.commonSubjects?.theyTeach || user.subjectsToTeach || []).map((subject, index) => {
                   const subjectName = typeof subject === 'string' ? subject : subject.subject || subject;
                   return (
-                    <Chip key={`teach-${index}`} label={subjectName} size="small" color="primary" />
+                    <Chip 
+                      key={`teach-${index}`} 
+                      label={subjectName} 
+                      size="small" 
+                      color="primary"
+                      sx={{
+                        borderRadius: 3,
+                        backdropFilter: 'blur(10px)',
+                        backgroundColor: 'rgba(25, 118, 210, 0.15)',
+                        border: '1px solid rgba(25, 118, 210, 0.3)',
+                      }}
+                    />
                   );
                 })}
               </Box>
@@ -266,7 +314,18 @@ function Matches() {
                 {(user.commonSubjects?.theyLearn || user.subjectsToLearn || []).map((subject, index) => {
                   const subjectName = typeof subject === 'string' ? subject : subject.subject || subject;
                   return (
-                    <Chip key={`learn-${index}`} label={subjectName} size="small" color="secondary" />
+                    <Chip 
+                      key={`learn-${index}`} 
+                      label={subjectName} 
+                      size="small" 
+                      color="secondary"
+                      sx={{
+                        borderRadius: 3,
+                        backdropFilter: 'blur(10px)',
+                        backgroundColor: 'rgba(156, 39, 176, 0.15)',
+                        border: '1px solid rgba(156, 39, 176, 0.3)',
+                      }}
+                    />
                   );
                 })}
               </Box>
@@ -280,7 +339,10 @@ function Matches() {
               size="small" 
               variant="contained" 
               color="primary"
-              onClick={() => handleConnect(user._id)}
+              onClick={(e) => {
+                e.stopPropagation(); // Prevent card click
+                handleConnect(user._id);
+              }}
               startIcon={<PersonIcon />}
             >
               Connect
@@ -292,7 +354,10 @@ function Matches() {
               size="small" 
               variant="contained" 
               color="primary"
-              onClick={() => handleMessage(user._id)}
+              onClick={(e) => {
+                e.stopPropagation(); // Prevent card click
+                handleMessage(user._id);
+              }}
               startIcon={<MessageIcon />}
             >
               Chat Now
@@ -304,7 +369,10 @@ function Matches() {
               <Tooltip title="Accept">
                 <IconButton 
                   color="success" 
-                  onClick={() => handleAccept(user._id)}
+                  onClick={(e) => {
+                    e.stopPropagation(); // Prevent card click
+                    handleAccept(user._id);
+                  }}
                 >
                   <CheckIcon />
                 </IconButton>
@@ -312,7 +380,10 @@ function Matches() {
               <Tooltip title="Reject">
                 <IconButton 
                   color="error" 
-                  onClick={() => handleReject(user._id)}
+                  onClick={(e) => {
+                    e.stopPropagation(); // Prevent card click
+                    handleReject(user._id);
+                  }}
                 >
                   <CloseIcon />
                 </IconButton>
@@ -326,6 +397,7 @@ function Matches() {
               color="info" 
               size="small" 
               sx={{ ml: 'auto' }}
+              onClick={(e) => e.stopPropagation()} // Prevent card click
             />
           )}
         </CardActions>
@@ -566,6 +638,13 @@ function Matches() {
           {snackbar.message}
         </Alert>
       </Snackbar>
+
+      {/* User Profile Dialog */}
+      <UserProfileDialog 
+        open={profileDialogOpen} 
+        onClose={handleCloseProfile} 
+        user={selectedUser} 
+      />
     </Container>
   );
 }

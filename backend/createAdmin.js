@@ -18,7 +18,7 @@ const createAdmin = async () => {
         
         if (adminUser) {
             console.log('⚠️ Admin user already exists, updating password...');
-            const hashedPassword = await bcrypt.hash('admin123456', 10);
+            const hashedPassword = await bcrypt.hash('admin@123', 10);
             adminUser.password = hashedPassword;
             adminUser.isAdmin = true;
             adminUser.status = 'online';
@@ -26,14 +26,14 @@ const createAdmin = async () => {
             console.log('✅ Admin password updated successfully');
         } else {
             // Create new admin user with full profile
-            const hashedPassword = await bcrypt.hash('admin123456', 10);
+            const hashedPassword = await bcrypt.hash('admin@123', 10);
             adminUser = new User({
                 name: 'Admin User',
                 email: 'admin@peerlink.com',
                 password: hashedPassword,
                 isAdmin: true,
                 status: 'online',
-                profileCompleted: true,
+                isProfileComplete: true,
                 subjectsToTeach: [],
                 subjectsToLearn: [],
                 bio: 'System Administrator'
@@ -44,7 +44,7 @@ const createAdmin = async () => {
 
         console.log('\nAdmin Credentials:');
         console.log('Email: admin@peerlink.com');
-        console.log('Password: admin123456');
+        console.log('Password: admin@123');
 
     } catch (error) {
         console.error('❌ Error creating admin:', error.message);
