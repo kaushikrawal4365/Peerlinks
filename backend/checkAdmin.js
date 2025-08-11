@@ -12,7 +12,7 @@ const checkAdmin = async () => {
       useUnifiedTopology: true,
     });
     console.log('Connected to MongoDB');
-
+    
     // Find all admin users
     const adminUsers = await User.find({ isAdmin: true });
     
